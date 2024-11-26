@@ -1,7 +1,9 @@
 import 'package:example/src/core/extensions/context_extension.dart';
+import 'package:example/src/core/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:simli_client/simli_client.dart';
+import 'package:simli_client/models/simli_state.dart'; 
+import 'package:simli_client/simli_client.dart'; 
 
 class SimliAvatarView extends StatelessWidget {
   const SimliAvatarView(
@@ -34,6 +36,7 @@ class SimliAvatarView extends StatelessWidget {
                 child: Builder(
                   key: ValueKey(state),
                   builder: (context) {
+                    logSuccess(state);
                     switch (state) {
                       case SimliState.ideal:
                         return placeholder;

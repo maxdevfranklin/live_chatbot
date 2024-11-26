@@ -11,7 +11,7 @@ final Logger log = Logger('Simli Client');
 void initializeLogger({Level level = kDebugMode ? Level.ALL : Level.SEVERE}) {
   Logger.root.level = Level.ALL; // defaults to Level.INFO
   Logger.root.onRecord.listen((LogRecord record) {
-    final text = '${record.time}: ${record.message}';
+    final text = '${record.time} SIMLI: ${record.message}';
     if (<Level>[Level.WARNING, Level.SEVERE, Level.SHOUT]
         .contains(record.level)) {
       _debugPrintColoredLine(text, 'red');

@@ -8,7 +8,7 @@ import Foundation
 import flutter_webrtc
 import path_provider_foundation
 import record_darwin
-import sqflite
+import sqflite_darwin
 import url_launcher_macos
 import webview_flutter_wkwebview
 
