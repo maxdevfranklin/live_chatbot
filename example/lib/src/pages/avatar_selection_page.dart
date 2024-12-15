@@ -3,12 +3,12 @@ import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:example/src/core/extensions/context_extension.dart';
 import 'package:example/src/core/routes/router.dart';
+import 'package:example/src/core/utils/logger.dart';
 import 'package:example/src/widgets/bg.dart';
 import 'package:example/src/widgets/simli_avatar_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
-import 'package:simli_client/utils/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:lottie/lottie.dart';
 

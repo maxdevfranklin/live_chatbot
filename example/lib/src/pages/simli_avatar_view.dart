@@ -1,6 +1,7 @@
 import 'package:example/src/core/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:simli_client/models/simli_state.dart';
 import 'package:simli_client/simli_client.dart';
 
 class SimliAvatarView extends StatelessWidget {

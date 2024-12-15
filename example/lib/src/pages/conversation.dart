@@ -8,6 +8,7 @@ import 'package:example/src/core/routes/router.dart';
 import 'package:example/src/core/services/deepgram_service.dart';
 import 'package:example/src/core/services/groq_service.dart';
 import 'package:example/src/core/utils/api_keys.dart';
+import 'package:example/src/core/utils/logger.dart';
 import 'package:example/src/pages/simli_avatar_view.dart';
 import 'package:example/src/widgets/bg.dart';
 import 'package:example/src/widgets/caption_box.dart';
@@ -15,8 +16,8 @@ import 'package:example/src/widgets/simli_avatar_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
+import 'package:simli_client/models/simli_client_config.dart';
 import 'package:simli_client/simli_client.dart';
-import 'package:simli_client/utils/logger.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class Conversations extends StatefulWidget {
@@ -40,12 +41,27 @@ class _ConversationsState extends State<Conversations> {
   ValueNotifier<String> status = ValueNotifier("Initializing ...");
   StreamSubscription? streamSubscription;
   String msg = '';
+
   @override
   void initState() {
     faceId = characterIds[widget.avatarName] ?? faceId;
     deepgramService.setModel(
         model: getTtsModel(faceId) ?? DeepgramTtsModel.asteria);
-    simliClient = SimliClient(apiKey: ApiKeys.simliApiKey, faceId: faceId);
+    simliClient = SimliClient(
+        log: log,
+        clientConfig: SimliClientConfig(
+            apiKey: ApiKeys.simliApiKey,
+            faceId: faceId,
+            handleSilence: true,
+            maxSessionLength: 3600,
+            maxIdleTime: 60,
+            syncAudio: true,
+            audioCheckInterval: Duration(milliseconds: 125),
+            silenceThreshold: Duration(milliseconds: 200),
+            answerTimeoutTime: Duration(seconds: 20),
+            connectionTimeoutTime: Duration(seconds: 120),
+            iceGatheringTimeout: Duration(seconds: 60),
+            webSocketTimeout: Duration(seconds: 20)));
     audioQueue = AudioQueue(
       sampleRate: 16000,
       sendAudioData: (data) {
@@ -64,7 +80,7 @@ class _ConversationsState extends State<Conversations> {
     };
     simliClient.onFailed = (error) {
       showSnackBar(error.message);
-      Navigator.pop(context);
+      // Navigator.pop(context);
     };
     listenDeepgramStt();
     Future.delayed(Durations.medium4).then(
@@ -91,6 +107,11 @@ class _ConversationsState extends State<Conversations> {
       avatarSize = size.width - 32;
     }
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          onAnswer("Hello, How are you?");
+        },
+      ),
       body: Bg(
         child: Padding(
             padding: const EdgeInsets.all(16),
@@ -216,11 +237,15 @@ class _ConversationsState extends State<Conversations> {
       showSnackBar(answer.data);
       endCall();
     } else {
-      logSuccess("Answer: ${answer.data}");
-      var audioStream = deepgramService.ttsStream(answer.data);
-      captionController.addToPipeLine(answer.data);
-      audioQueue?.start(audioStream);
+      onAnswer(answer.data);
     }
+  }
+
+  void onAnswer(String answer) {
+    logSuccess("Answer: $answer");
+    var audioStream = deepgramService.ttsStream(answer);
+    captionController.addToPipeLine(answer);
+    audioQueue?.start(audioStream);
   }
 
   void endCall() {
@@ -257,7 +282,8 @@ class _ConversationsState extends State<Conversations> {
   }
 
   void showSnackBar(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    ScaffoldMessenger.of(AppRouter.context ?? context)
+        .showSnackBar(SnackBar(content: Text(msg)));
   }
 }
 
@@ -371,7 +397,7 @@ class AudioQueue {
     final Uint8List chunk =
         Uint8List.fromList(audioQueue.toList().take(4000).toList());
     sendAudioData(chunk);
-    logSuccess("Data Sent: ${chunk.length}");
+    // logSuccess("Data Sent: ${chunk.length}");
     int i = 0;
     int l = chunk.length;
     while (i < l) {
