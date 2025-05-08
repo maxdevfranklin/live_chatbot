@@ -29,7 +29,7 @@ class _AvatarSelectionPageState extends State<AvatarSelectionPage> {
     Future.delayed(Durations.long2).then(
       (value) {
         if (widget.showFollow) {
-          _showFollowMe();
+          // _showFollowMe();
         }
       },
     );
