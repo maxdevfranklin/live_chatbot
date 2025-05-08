@@ -55,7 +55,7 @@ class _AvatarSelectionPageState extends State<AvatarSelectionPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "Please select an agent for the conversation.",
+                      "Senior Sherpa",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 36,
@@ -65,7 +65,7 @@ class _AvatarSelectionPageState extends State<AvatarSelectionPage> {
                     ),
                     const Gap(16),
                     Text(
-                      "Choose an agent to initiate the conversation. Simli supports more than 20 faces for seamless interaction.",
+                      "I am Sherpa, guiding your family through one of the most important jouneys of your life.",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 16,

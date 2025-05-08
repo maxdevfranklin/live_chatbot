@@ -9,5 +9,6 @@
     "spinkit",
     "unawaited",
     "webrtc"
-  ]
+  ],
+  "cmake.sourceDirectory": "D:/Doc/@Flutter/Sherpa/simli-flutter-client/example/linux"
 }

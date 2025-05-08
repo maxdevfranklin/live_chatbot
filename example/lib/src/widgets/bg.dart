@@ -8,7 +8,11 @@ class Bg extends StatelessWidget {
     return DecoratedBox(
       decoration: const BoxDecoration(
           gradient: LinearGradient(
-        colors: [Color(0xff000000), Color(0xff002e5d), Color(0xff000000)],
+        colors: [
+          Color(0xff000000),
+          Color.fromARGB(255, 0, 79, 93),
+          Color(0xff000000)
+        ],
         stops: [0, 0.5, 1],
         begin: Alignment.bottomRight,
         end: Alignment.topLeft,
