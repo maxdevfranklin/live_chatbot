@@ -76,7 +76,14 @@ class _ConversationsState extends State<Conversations> {
 
     simliClient.onConnection = () {
       status.value = "initializing STT";
-      onMicTap();
+      // onMicTap();
+      // captionController.add("This is our first test");
+      // start a timer to check if the simli client is connected
+      // Future.delayed(Duration(seconds: 5), () {
+      //   if (msg.isEmpty && !simliClient.isSpeaking) {
+      onTranscribe("I am Grace from 43rd Big Idea.");
+      //   }
+      // });
     };
     simliClient.onFailed = (error) {
       showSnackBar(error.message);
@@ -147,21 +154,22 @@ class _ConversationsState extends State<Conversations> {
                 CaptionBox(controller: captionController),
                 const Gap(16),
                 Row(
+                  // remove
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ValueListenableBuilder(
-                        valueListenable: deepgramService.isTranscribing,
-                        builder: (context, isTranscribing, child) {
-                          return RoundedButton(
-                            iconData: Icons.mic,
-                            color: Colors.white.withOpacity(0.35),
-                            activeColor: context.secondary,
-                            iconColor: Colors.black,
-                            activeIconColor: Colors.black,
-                            onTap: onMicTap,
-                            isActive: isTranscribing,
-                          );
-                        }),
+                    // ValueListenableBuilder(
+                    //     valueListenable: deepgramService.isTranscribing,
+                    //     builder: (context, isTranscribing, child) {
+                    //       return RoundedButton(
+                    //         iconData: Icons.mic,
+                    //         color: Colors.white.withOpacity(0.35),
+                    //         activeColor: context.secondary,
+                    //         iconColor: Colors.black,
+                    //         activeIconColor: Colors.black,
+                    //         onTap: onMicTap,
+                    //         isActive: isTranscribing,
+                    //       );
+                    //     }),
                     const Gap(16),
                     RoundedButton(
                         iconData: Icons.call_end,
@@ -231,14 +239,17 @@ class _ConversationsState extends State<Conversations> {
     captionController.add(captions);
     status.value = "Thinking...";
     logSuccess("Question: $captions");
-    var answer =
-        await groqService.sendMsg(text: captions, name: widget.avatarName);
-    if (!answer.isSuccessFull) {
-      showSnackBar(answer.data);
-      endCall();
-    } else {
-      onAnswer(answer.data);
-    }
+    // var answer =
+    //     await groqService.sendMsg(text: captions, name: widget.avatarName);
+    //remove
+    // if (!answer.isSuccessFull) {
+    //   showSnackBar(answer.data);
+    //   endCall();
+    // } else {
+    //   onAnswer(answer.data);
+    // }
+    onAnswer(
+        "Hello, I am Grace from 43rd Big Idea. I’d be happy to get you the information you need, but before I do, do you mind if I ask a few quick questions? That way, I can really understand what’s important and make sure I’m helping in the best way possible.");
   }
 
   void onAnswer(String answer) {

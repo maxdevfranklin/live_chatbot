@@ -12,5 +12,6 @@ class ApiKeys {
 
   ///Api keys for the groq
   static const String groqApiKey = String.fromEnvironment('groqApiKey',
-      defaultValue: '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');
+      defaultValue:
+          'gsk_KTCtZqTOfbjYmYGLgyhxWGdyb3FYJDo0iTkZRHIlJuloU1g3BTCu_');
 }
