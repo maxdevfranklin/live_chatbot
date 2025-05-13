@@ -39,6 +39,7 @@ dependencies:
       url: https://github.com/jemisgoti/deepgram-flutter-sdk
       ref: main
   logging: ^1.3.0
+  dart_webrtc: ^1.5.3+hotfix.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
