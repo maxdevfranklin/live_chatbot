@@ -16,6 +16,6 @@ class ApiKeys {
           'gsk_iq5X4MkfWr45f81wKrvQWGdyb3FYWMnLGLI8i7EvOxcW8iyxbc6V_');
 
   ///Api keys for the groq
-  static const String gptApiKey =
-      String.fromEnvironment('gptApiKey', defaultValue: '');
+//   static const String gptApiKey =
+//       String.fromEnvironment('gptApiKey', defaultValue: '');
 }
