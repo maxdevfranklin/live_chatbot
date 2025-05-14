@@ -4,14 +4,14 @@ import 'package:example/src/core/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
 
 class CaptionBox extends StatelessWidget {
-  const CaptionBox({super.key, this.width = 420, required this.controller});
+  const CaptionBox({super.key, this.width = 360, required this.controller});
   final double width;
   final CaptionController controller;
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: context.secondary.withOpacity(.2035),
         borderRadius: BorderRadius.circular(12),
@@ -26,7 +26,7 @@ class CaptionBox extends StatelessWidget {
               child: Text(
                 key: ValueKey(caption),
                 caption,
-                style: const TextStyle(color: Colors.white, fontSize: 16),
+                style: const TextStyle(color: Colors.white, fontSize: 14),
               ),
             );
           }),

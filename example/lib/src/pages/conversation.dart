@@ -6,6 +6,7 @@ import 'package:deepgram_sdk/models/tts_model.dart';
 import 'package:example/src/core/extensions/context_extension.dart';
 import 'package:example/src/core/routes/router.dart';
 import 'package:example/src/core/services/deepgram_service.dart';
+import 'package:example/src/core/services/gpt_service.dart';
 import 'package:example/src/core/services/groq_service.dart';
 import 'package:example/src/core/utils/api_keys.dart';
 import 'package:example/src/core/utils/logger.dart';
@@ -33,6 +34,7 @@ class _ConversationsState extends State<Conversations> {
 
   late SimliClient simliClient;
   late DeepgramService deepgramService = DeepgramService();
+  ChatGPTService chatGPTService = ChatGPTService();
   GroqService groqService = GroqService();
   CaptionController captionController = CaptionController();
   AudioQueue? audioQueue;
@@ -78,10 +80,10 @@ class _ConversationsState extends State<Conversations> {
       status.value = "initializing STT";
       // onMicTap();
       // captionController.add("This is our first test");
-      // start a timer to check if the simli client is connected
+      // //start a timer to check if the simli client is connected
       // Future.delayed(Duration(seconds: 5), () {
       //   if (msg.isEmpty && !simliClient.isSpeaking) {
-      onTranscribe("I am Grace from 43rd Big Idea.");
+      //     onTranscribe("I am Grace from 43rd Big Idea.");
       //   }
       // });
     };
@@ -108,7 +110,7 @@ class _ConversationsState extends State<Conversations> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.sizeOf(context);
-    double avatarSize = 420;
+    double avatarSize = 360;
     if (size.width > avatarSize + 32) {
     } else {
       avatarSize = size.width - 32;
@@ -153,6 +155,37 @@ class _ConversationsState extends State<Conversations> {
 
                 CaptionBox(controller: captionController),
                 const Gap(16),
+
+                //Add message input filed
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  width: avatarSize,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: textEditingController,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            hintText: "Type your message...",
+                            hintStyle: TextStyle(color: Colors.white70),
+                            border: InputBorder.none,
+                          ),
+                          onSubmitted: (_) => sendMessage(),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.send, color: Colors.white),
+                        onPressed: sendMessage,
+                      ),
+                    ],
+                  ),
+                ),
+                const Gap(16),
                 Row(
                   // remove
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -170,7 +203,7 @@ class _ConversationsState extends State<Conversations> {
                     //         isActive: isTranscribing,
                     //       );
                     //     }),
-                    const Gap(16),
+                    // const Gap(16),
                     RoundedButton(
                         iconData: Icons.call_end,
                         color: Colors.redAccent,
@@ -239,17 +272,18 @@ class _ConversationsState extends State<Conversations> {
     captionController.add(captions);
     status.value = "Thinking...";
     logSuccess("Question: $captions");
-    // var answer =
-    //     await groqService.sendMsg(text: captions, name: widget.avatarName);
+    var answer =
+        // await groqService.sendMsg(text: captions, name: widget.avatarName);
+        await chatGPTService.sendMsg(text: captions, name: widget.avatarName);
     //remove
-    // if (!answer.isSuccessFull) {
-    //   showSnackBar(answer.data);
-    //   endCall();
-    // } else {
-    //   onAnswer(answer.data);
-    // }
-    onAnswer(
-        "Hello, I am Grace from 43rd Big Idea. I’d be happy to get you the information you need, but before I do, do you mind if I ask a few quick questions? That way, I can really understand what’s important and make sure I’m helping in the best way possible.");
+    if (!answer.isSuccessful) {
+      showSnackBar(answer.data);
+      endCall();
+    } else {
+      onAnswer(answer.data);
+    }
+    // onAnswer(
+    //     "Hello, I am Grace from 43rd Big Idea. I’d be happy to get you the information you need, but before I do, do you mind if I ask a few quick questions? That way, I can really understand what’s important and make sure I’m helping in the best way possible.");
   }
 
   void onAnswer(String answer) {
